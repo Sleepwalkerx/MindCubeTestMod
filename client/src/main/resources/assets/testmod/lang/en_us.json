@@ -1,0 +1,10 @@
+{
+    "key.categories.testmod.main": "TestMod",
+    "key.testmod.open_gui": "Open GUI",
+    "response.testmod.config.reload.success": "Config has been successfully reloaded",
+    "response.testmod.config.reload.error": "Error when reload config",
+    "response.testmod.not_ready": "Databases are not ready for queries",
+    "response.testmod.unexpected_error": "Unexpected error",
+    "response.testmod.execution_rejected": "Execution rejected",
+    "response.testmod.proto_message.processed": "Message has been successfully processed"
+}

@@ -1,0 +1,10 @@
+{
+    "key.categories.testmod.main": "TestMod",
+    "key.testmod.open_gui": "Открыть GUI",
+    "response.testmod.config.reload.success": "Конфиг успешно перезагружен",
+    "response.testmod.config.reload.error": "Ошибка при перезагрузке конфига",
+    "response.testmod.not_ready": "Базы данных не готовы к запросам",
+    "response.testmod.unexpected_error": "Непредвиденная ошибка",
+    "response.testmod.execution_rejected": "Исполнение отклонено",
+    "response.testmod.proto_message.processed": "Сообщение успешно обработано"
+}

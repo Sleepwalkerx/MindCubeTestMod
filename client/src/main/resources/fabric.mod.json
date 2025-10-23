@@ -1,0 +1,24 @@
+{
+    "schemaVersion": 1,
+    "id": "testmod",
+    "version": "${version}",
+    "name": "TestMod",
+    "description": "",
+    "authors": [],
+    "contact": {},
+    "license": "All-Rights-Reserved",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.mindcube.testmod.common.TestMod"
+        ],
+        "client": [
+            "com.mindcube.testmod.client.TestModClient"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=${loader_version}",
+        "fabric": "*",
+        "minecraft": "${minecraft_version}"
+    }
+}

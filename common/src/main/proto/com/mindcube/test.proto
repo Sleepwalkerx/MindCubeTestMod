@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package mindcube;
+
+option java_package = "com.mindcube.proto";
+option java_multiple_files = true;
+
+message Message {
+  string text = 1;
+}

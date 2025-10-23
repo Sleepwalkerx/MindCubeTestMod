@@ -1,0 +1,104 @@
+plugins {
+    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'maven-publish'
+    id 'com.google.protobuf' version "0.9.5"
+}
+
+version = "${mod_version}-server"
+group = project.mod_group
+
+base {
+    archivesName = project.mod_group
+}
+
+loom {
+    serverOnlyMinecraftJar()
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+    runs {
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+    }
+}
+
+configurations {
+    transitiveInclude {
+        transitive = true
+        exclude group: 'com.mojang'
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.jetbrains.kotlinx'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    /* ==================================================== Libs ==================================================== */
+    implementation include("com.google.protobuf:protobuf-java:${protobuf_version}")
+    implementation transitiveInclude("org.hibernate.orm:hibernate-core:${hibernate_version}")
+    implementation transitiveInclude("com.zaxxer:HikariCP:${hikari_version}")
+    implementation transitiveInclude("org.postgresql:postgresql:${postgre_version}")
+
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
+
+    implementation project(path: ":common", configuration: "namedElements")
+    include(project(":common"))
+
+    configurations.transitiveInclude.resolvedConfiguration.resolvedArtifacts.each { art ->
+        include(art.moduleVersion.id.toString())
+    }
+}
+
+processResources {
+    inputs.property "version", mod_version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": mod_version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version,
+                "mod_id": mod_id,
+                "mod_name": mod_name
+    }
+}
+
+def targetJavaVersion = 21
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release.set(targetJavaVersion)
+    }
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    withSourcesJar()
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.6.1'
+    }
+    generateProtoTasks {
+    }
+}
