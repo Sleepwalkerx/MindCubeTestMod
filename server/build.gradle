@@ -8,7 +8,7 @@ version = "${mod_version}-server"
 group = project.mod_group
 
 base {
-    archivesName = project.mod_group
+    archivesName = project.mod_name
 }
 
 loom {
